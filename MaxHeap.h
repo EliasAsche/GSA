@@ -1,8 +1,25 @@
-//
-// Created by elias on 4/21/2024.
-//
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
 
-#ifndef GSA_MAXHEAP_H
-#define GSA_MAXHEAP_H
+struct Node {
+private:
+    std::vector<int> ratings;
+    std::string title;
+    std::string genre;
+    float avgRating = 0.0;
+    Node(std::string t, std::string g, std::vector<int> r,) : title(t), ratings(r){
+        calcAvg();
+    }
+    float calcAvg();
 
-#endif //GSA_MAXHEAP_H
+};
+
+class MaxHeap {
+    Node* CurNode;
+
+};
