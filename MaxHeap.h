@@ -8,18 +8,20 @@
 
 struct Node {
 private:
-    std::vector<int> ratings;
-    std::string title;
-    std::string genre;
-    float avgRating = 0.0;
-    Node(std::string t, std::string g, std::vector<int> r,) : title(t), ratings(r){
-        calcAvg();
+    std::vector<double> transactionAmounts;
+    std::string transactionType;
+    double avgAmount = 0.0;
+    Node(std::string type,  std::vector<double> tA) : transactionType(type), transactionAmounts(tA){
+        calcAvg(M);
     }
-    float calcAvg();
+    double calcAvg(Node*);
+public:
+    //add more here
 
 };
 
 class MaxHeap {
-    Node* CurNode;
+    std::vector<Node*> transactionHeap;
+
 
 };
