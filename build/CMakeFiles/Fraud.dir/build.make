@@ -95,9 +95,10 @@ Fraud: CMakeFiles/Fraud.dir/src/main.cpp.o
 Fraud: CMakeFiles/Fraud.dir/src/window.cpp.o
 Fraud: CMakeFiles/Fraud.dir/build.make
 Fraud: external/glfw/src/libglfw3.a
-Fraud: /usr/lib/x86_64-linux-gnu/libGL.so
 Fraud: /usr/lib/x86_64-linux-gnu/librt.so
 Fraud: /usr/lib/x86_64-linux-gnu/libm.so
+Fraud: /usr/lib/x86_64-linux-gnu/libGLX.so
+Fraud: /usr/lib/x86_64-linux-gnu/libOpenGL.so
 Fraud: CMakeFiles/Fraud.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/workspaces/GSA/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Fraud"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Fraud.dir/link.txt --verbose=$(VERBOSE)

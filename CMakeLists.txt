@@ -18,6 +18,8 @@ add_subdirectory(external/glfw)
 # Include directories
 include_directories(external/glfw/include)
 
+set(OpenGL_GL_PREFERENCE GLVND)
+
 # Find packages
 find_package(OpenGL REQUIRED)
 
