@@ -16,7 +16,7 @@ public:
     ~Transactions() = default;
     std::vector<Node*> getNodes() const;
     void readTransactionsCaller(const std::string& filename);
-    std::vector<Node*> mergeSortAge(const std::vector<Node*>& nodes) const;
+    std::vector<Node*> mergeSortAge(const std::vector<Node*>& nodes) const; // these functions don't need callers as they cannot manipulate the data directly
     std::vector<Node*> quickSortAge(const std::vector<Node*>& nodes) const;
     std::vector<Node*> mergeSortAmount(const std::vector<Node*>& nodes) const;
     std::vector<Node*> quickSortAmount(const std::vector<Node*>& nodes) const;
