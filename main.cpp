@@ -8,8 +8,10 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-
-
+    string filePath;
+    string sortField;
+    cin >> filePath;
+    cin >>sortField;
     Transactions transactions;
     transactions.readTransactionsCaller(filePath);
 
@@ -31,7 +33,10 @@ int main(int argc, char* argv[]) {
         sortedNodesMerge = transactions.mergeSortAmount(transactions.getNodes());
         auto endMerge = chrono::high_resolution_clock::now();
         auto durationMerge = chrono::duration_cast<std::chrono::milliseconds>(endMerge - beginMerge);
+        auto beginQuick = chrono::high_resolution_clock::now();
         sortedNodesQuick = transactions.quickSortAmount(transactions.getNodes());
+        auto endQuick = chrono::high_resolution_clock::now();
+        auto durationQuick = chrono::duration_cast<std::chrono::milliseconds>(endQuick - beginQuick);
     }
 
     for (const auto& node : sortedNodesMerge) {
@@ -40,13 +45,14 @@ int main(int argc, char* argv[]) {
              << ", Account Age: " << node->accountAge
              << ", Is Fraudulent: " << (node->isFraudulent ? "Yes" : "No") << endl;
     }
-
+    cout << durationMerge.count();
     for (const auto& node : sortedNodesQuick) {
         cout << "Transaction Type: " << node->transactionType
              << ", Amount: $" << node->transactionAmount
              << ", Account Age: " << node->accountAge
              << ", Is Fraudulent: " << (node->isFraudulent ? "Yes" : "No") << endl;
     }
+    cout << durationQuick.count();
 
     return 0;
 }
