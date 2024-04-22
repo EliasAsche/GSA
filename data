@@ -1,0 +1,96 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <iomanip>
+class Movie {
+public:
+    std::string title;
+    std::vector<std::string> genres;
+    std::vector<int> ratings;
+
+    Movie() {}  // Adding a default constructor
+
+    Movie(std::string t) : title(t) {}
+
+    void addRating(int rating) {
+        ratings.push_back(rating);
+    }
+
+    void addGenre(const std::string& genre) {
+        genres.push_back(genre);
+    }
+
+    double getAverageRating() const {
+        if (ratings.empty()) return 0.0;
+        double sum = 0;
+        for (int rating : ratings) {
+            sum += rating;
+        }
+        return sum / ratings.size();
+    }
+};
+
+
+void loadMovies(std::unordered_map<int, Movie>& movies, const std::string& filename) {
+    std::ifstream file(filename);
+    std::string line;
+    while (getline(file, line)) {
+        std::istringstream iss(line);
+        std::string segment;
+        std::vector<std::string> segments;
+        while (getline(iss, segment, '|')) {
+            segments.push_back(segment);
+        }
+        if (segments.size() >= 24) {
+            int movieId = std::stoi(segments[0]);
+            movies[movieId] = Movie(segments[1]);  // Movie ID and Title
+            // Parse genres, which are from segments[5] to segments[23]
+            static const std::vector<std::string> genreNames = {"Unknown", "Action", "Adventure", "Animation",
+                                                                "Children's", "Comedy", "Crime", "Documentary", "Drama",
+                                                                "Fantasy", "Film-Noir", "Horror", "Musical", "Mystery",
+                                                                "Romance", "Sci-Fi", "Thriller", "War", "Western"};
+            for (int i = 0; i < 19; ++i) {
+                if (segments[5 + i] == "1") {
+                    movies[movieId].addGenre(genreNames[i]);
+                }
+            }
+        }
+    }
+}
+
+void loadRatings(std::unordered_map<int, Movie>& movies, const std::string& filename) {
+    std::ifstream file(filename);
+    std::string line;
+    while (getline(file, line)) {
+        std::istringstream iss(line);
+        int userId, movieId, rating, timestamp;
+        iss >> userId >> movieId >> rating >> timestamp;
+        if (movies.find(movieId) != movies.end()) {
+            movies[movieId].addRating(rating);
+        }
+    }
+}
+
+int main() {
+    std::unordered_map<int, Movie> movies;
+
+    loadMovies(movies, "C:/Users/myakh/Downloads/archive/ml-100k/u.data");
+    loadRatings(movies, "C:/Users/myakh/Downloads/archive/ml-100k/u.data");
+
+    int count = 0;
+    for (const auto& pair : movies) {
+        if (count >= 5) break;
+        std::cout << "Movie: " << pair.second.title
+                  << ", Genres: ";
+        for (const auto& genre : pair.second.genres) {
+            std::cout << genre << " ";
+        }
+        std::cout << ", Average Rating: " << std::fixed << std::setprecision(2) << pair.second.getAverageRating()
+                  << std::endl;
+        ++count;
+    }
+    return 0;
+}
