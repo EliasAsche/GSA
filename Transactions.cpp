@@ -172,7 +172,7 @@ double Transactions::getAvgTransactionAmount(const std::vector<Node*>& nodes) co
 void Transactions::getFraudulentRate(const std::vector<Node*>& nodes) const {
     int totalTransactions = nodes.size();
     if (totalTransactions == 0) {
-        return
+        return;
     }
     double totalAmount = 0;
     int btCount = 0;
@@ -191,7 +191,7 @@ void Transactions::getFraudulentRate(const std::vector<Node*>& nodes) const {
             }
         }
         else if (node->transactionType == "credit card") {
-            creditCount++
+            creditCount++;
             if (node->isFraudulent) {}
             creditFraudCount++;
         }
