@@ -209,6 +209,12 @@ void Transactions::getFraudulentRate(const std::vector<Node*>& nodes) const {
             }
         }
     }
-    cout << "Bank Transfer" << btFraudCount / btCount << "/n" << "Credit Card" << creditFraudCount / creditCount << "/n"
-    << "Debit Card" << debitFraudCount / debitCount << "/n" << "PayPal" << paypalFraudCount / paypalCount << endl;
+    double btPercent = btFraudCount / btCount;
+    double creditPercent = creditFraudCount / creditCount;
+    double debitPercent = debitFraudCount / debitCount;
+    double paypalPercent = paypalFraudCount / paypalCount;
+
+
+    cout << "Bank Transfer" << btPercent << "/n" << "Credit Card" << creditPercent << "/n"
+    << "Debit Card" << debitPercent << "/n" << "PayPal" << paypalPercent<< endl;
 }
