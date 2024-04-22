@@ -99,3 +99,29 @@ vector<Transactions::Node*> Transactions::quickSortAmount(const vector<Node*>& n
     less.insert(less.end(), greater.begin(), greater.end());
     return less;
 }
+
+void Transactions::readTransactions(const std::string& filename) {
+    std::ifstream file(filename);
+    std::string line;
+    std::getline(file, line);  // Skip the header line
+
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        std::vector<std::string> transactionData;
+        std::string data;
+
+        while (std::getline(ss, data, ',')) {
+            transactionData.push_back(data);
+        }
+
+        double amount = std::stod(transactionData[0]);
+        std::string type = transactionData[1];
+        bool isFraudulent = transactionData[2] == "1";
+        int age = std::stoi(transactionData[3]);
+
+        Node* newNode = new Node(type, amount, age, isFraudulent);
+        transactionNodes.push_back(newNode);// Optionally display the node data
+    }
+    file.close();
+}
+};
