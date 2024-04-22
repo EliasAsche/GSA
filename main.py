@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import PySimpleGUI as sg # type: ignore
 
 # Function to create the main application window
 def create_main_window():
