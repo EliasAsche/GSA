@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
         double tAmount = transactions.getAvgTransactionAmount(transactions.getNodes());
         double tAge = transactions.getAvgAccountAge(transactions.getNodes());
 
-    cout << durationMergeAge.count() << endl;
+    cout << "Merge Sorted by Account Age (only first 100 elements) \n" << "Time to merge sort by account age: " << durationMergeAge.count() << " milliseconds" << endl;
     int count = 0;
     for (const auto& node : sortedNodesMergeAge) {
         if (count >= 100) break;
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
         count++;
     }
     cout << endl;
-    cout << durationMergeAmount.count() << endl;
+    cout << "Merge Sorted by Transaction Amount (only first 100 elements) \n" <<"Time to merge sort by transaction amount: " << durationMergeAmount.count() << " milliseconds" << endl;
     count = 0;
     for (const auto& node : sortedNodesMergeAmount) {
         if (count >= 100) break;
@@ -58,8 +58,8 @@ int main(int argc, char* argv[]) {
              << ", Is Fraudulent: " << (node->isFraudulent ? "Yes" : "No") << endl;
         count++;
     }
-
-    cout << durationQuickAge.count();
+    cout << endl;
+    cout <<"Quick Sorted by Account Age (only first 100 elements) \n" << "Time to quick sort by account age: " << durationQuickAge.count() << " milliseconds" << endl;
     count = 0;
     for (const auto& node : sortedNodesQuickAge) {
         if (count >= 100) break;
@@ -69,8 +69,8 @@ int main(int argc, char* argv[]) {
              << ", Is Fraudulent: " << (node->isFraudulent ? "Yes" : "No") << endl;
         count++;
     }
-
-    cout << durationQuickAmount.count();
+    cout << endl;
+    cout <<"Quick Sorted by Transaction Amount (only first 100 elements) \n" << "Time to quick sort by transaction amount: " << durationQuickAmount.count() << " milliseconds" << endl;
     count = 0;
     for (const auto& node : sortedNodesQuickAmount) {
         if (count >= 100) break;
@@ -80,6 +80,7 @@ int main(int argc, char* argv[]) {
              << ", Is Fraudulent: " << (node->isFraudulent ? "Yes" : "No") << endl;
         count++;
     }
+    cout << endl;
 
     cout << "Statistics of Fraudulent Transactions:\n" << "Average Fraudulent Transaction Amount: " << tAmount << "\n"
     << "Average Fraudulent Account Age: " << tAge << "\n" << "Fraud Rate of Transaction Types: \n";
