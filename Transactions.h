@@ -8,19 +8,23 @@ public:
         std::string transactionType;
         double transactionAmount;
         int accountAge;
-        int isFraudulent;
+        bool isFraudulent;
         Node(std::string type, double amount, int age, int isFraud) : transactionType(type), transactionAmount(amount), accountAge(age), isFraudulent(isFraud) {}
     };
 
-private:
-    std::vector<Node*> transactionNodes; // Use smart pointers for better memory management
-
-public:
-    const std::vector<Node*>& getNodes() const { return transactionNodes; }
-    std::vector<Node*> mergeSortAge(const std::vector<Node*>& nodes) const;
+    Transactions() = default;
+    ~Transactions() = default;
+    std::vector<Node*> getNodes() const;
+    void readTransactionsCaller(const std::string& filename);
+    std::vector<Node*> mergeSortAge(const std::vector<Node*>& nodes) const; // these functions don't need callers as they cannot manipulate the data directly
     std::vector<Node*> quickSortAge(const std::vector<Node*>& nodes) const;
     std::vector<Node*> mergeSortAmount(const std::vector<Node*>& nodes) const;
     std::vector<Node*> quickSortAmount(const std::vector<Node*>& nodes) const;
-    void readTransactions(const std::string& filename);
+    double getAvgAccountAge(const std::vector<Node*>& nodes) const;
+    double getAvgTransactionAmount(const std::vector<Node*>& nodes) const;
+    void getFraudulentRate(const std::vector<Node*>& nodes) const;
 
+private:
+    std::vector<Node*> transactionNodes;
+    void readTransactions(const std::string& filename);
 };
