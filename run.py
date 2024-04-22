@@ -1,20 +1,41 @@
 import PySimpleGUI as sg # type: ignore
 import subprocess
+import os
 
-def run_cpp_backend(input_data):
+def run_cpp_backend(sort_method):
     try:
-        # Replace 'your_cpp_program' with the path to your compiled C++ executable
-        # and include any necessary arguments.
-        # For example, if your C++ program expects a single input argument:
-        result = subprocess.run(['GSA/main.cpp'], capture_output=True, text=True, check=True)
-        return result.stdout  # This captures the standard output from the C++ program
-    except subprocess.CalledProcessError as e:
-        print("Error running C++ backend:", e)
-        return None
+        # Execute the C++ backend with the selected sorting method
 
-# Function to create the main application window
+        # create pipe for c++ function processing
+        #data,temp = os.pipe()
+
+        # add sort method as input for function
+        #os.write(temp, bytes(sort_method + "\n", "utf-8"))
+        #os.close(temp)
+        
+        # adjust input params to match what c++ wants
+        if sort_method == 'Merge Sort':
+            sort_method = 'merge'
+        else:
+            sort_method = 'quick'
+
+        env = os.environ
+        data,tmp = os.pipe()
+        os.write(tmp, bytes(sort_method + "\n", "utf-8"))
+        os.close(tmp)
+
+        # store output of c++ function
+        result = subprocess.run("./out2", stdin=data, capture_output=True, env=env, text=True, check=True)
+
+        # result = subprocess.run(['./main.cpp', sort_method], capture_output=True, text=True, check=True)
+        return result.stdout  # This captures the standard output from the C++ program, which should be formatted correctly
+    except subprocess.CalledProcessError as e:
+        print(f"Error running C++ backend: {e}")
+        return "Error occurred during processing."
+
+
 def create_main_window():
-    background_color = '#FDBAC5' # Barbie pink for the window background
+    background_color = '#FDBAC5'  # Barbie pink for the window background
     text_background_color = '#FF0000'  # Pastel pink for text background sections
     title_font = ('Comic Sans MS', 24, 'bold')  # Updated font and style for title
     text_font = ('Calibri', 14)  # Updated font for text
@@ -24,18 +45,17 @@ def create_main_window():
         [sg.Text('Bogus Buster: Is it Fraudulent?', font=title_font, justification='center', background_color=background_color, size=(25, 1))],
         [
             sg.Column([
-                [sg.Text('Dropdown Menu:', font=text_font, justification='left', background_color=text_background_color)],
-                [sg.Combo(dropdown_options, size=(20, 1), font=text_font, pad=(0, 5))],
-                [sg.Text(' ', size=(50, 20), relief=sg.RELIEF_SUNKEN, key='-INFO-', background_color='#FFFFFF', pad=(0, 5))],
-                [sg.Text('Runtime Info:', font=text_font, justification='left', background_color=text_background_color)],
-                [sg.Text('Data about runtime', size=(50, 3), relief=sg.RELIEF_SUNKEN, key='-RUNTIME-', background_color='#FFFFFF')]
+                [sg.Text('Select Algorithm:', font=text_font, justification='left', background_color=text_background_color)],
+                [sg.Combo(dropdown_options, default_value='Merge Sort', size=(20, 1), font=text_font, pad=(0, 5), key='-ALGO-')],
+                [sg.Button('Run Analysis', font=text_font)],
+                [sg.Text('Top 10 Transactions:', font=text_font, justification='left', background_color=text_background_color)],
+                [sg.Multiline(default_text='', size=(45, 5), key='-TOP_TRANS-', disabled=True, background_color='#FFFFFF')]
             ], background_color=background_color, pad=((10, 10), (10, 10)))
         ],
-        [sg.Button('Restart', size=(10, 2), font=('Calibri', 12, ), button_color=('white', '#FF0000'))]
+        [sg.Button('Restart', size=(10, 2), font=('Calibri', 12), button_color=('white', '#FF0000'))]
     ]
     return sg.Window('Bogus Buster', layout, background_color=background_color, size=(700, 700), element_justification='c')
 
-# Function to handle window operations, including restart
 def window_operations():
     main_window = create_main_window()
     while True:
@@ -45,7 +65,14 @@ def window_operations():
         if event == 'Restart':
             main_window.close()
             main_window = create_main_window()  # Restarting the application window
+        if event == 'Run Analysis':
+            output = run_cpp_backend(values['-ALGO-'])
+            print(output)
+            # Update the multiline text element with only the required data from the output
+            main_window['-TOP_TRANS-'].update(output if output else "No output or an error occurred")
+
     main_window.close()
+
 
 # Function to create the welcome window
 def create_welcome_window():
