@@ -8,7 +8,7 @@ public:
         std::string transactionType;
         double transactionAmount;
         int accountAge;
-        int isFraudulent;
+        bool isFraudulent;
         Node(std::string type, double amount, int age, int isFraud) : transactionType(type), transactionAmount(amount), accountAge(age), isFraudulent(isFraud) {}
     };
 

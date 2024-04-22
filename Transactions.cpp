@@ -134,3 +134,52 @@ void Transactions::readTransactionsCaller(const std::string &filename) {
 vector<Transactions::Node*> Transactions::getNodes() const{
     return this->transactionNodes;
 }
+
+double Transactions::getAvgAccountAge(const std::vector<Node*>& nodes) const {
+    double totalAge = 0;
+    int count = 0;
+    for (const Node* node : nodes) {
+        if (node->isFraudulent) {
+            totalAge += node->accountAge;
+            count++;
+        }
+    }
+    if (count > 0) {
+        return totalAge / count;
+    } else {
+        return 0;
+    }
+}
+
+double Transactions::getAvgTransactionAmount(const std::vector<Node*>& nodes) const {
+    double totalAmount = 0;
+    int count = 0;
+    for (const Node* node : nodes) {
+        if (node->isFraudulent) {
+            totalAmount += node->transactionAmount;
+            count++;
+        }
+    }
+
+    if (count > 0) {
+        return totalAmount / count;
+    } else {
+        return 0;
+    }
+}
+
+double Transactions::getFraudulentRate(const std::vector<Node*>& nodes) const {
+    int totalTransactions = nodes.size();
+    if (totalTransactions == 0) {
+        return 0.0;
+    }
+
+    int fraudulentCount = 0;
+    for (const Node* node : nodes) {
+        if (node->isFraudulent) {
+            fraudulentCount++;
+        }
+    }
+
+    return 100.0 * fraudulentCount / totalTransactions;
+}
