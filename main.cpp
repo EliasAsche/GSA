@@ -18,25 +18,28 @@ int main(int argc, char* argv[]) {
     vector<Transactions::Node*> sortedNodesMerge;
     vector<Transactions::Node*> sortedNodesQuick;
 
+    chrono::milliseconds durationMerge(0);
+    chrono::milliseconds durationQuick(0);
+
     if (sortField == "age") {
         auto beginMerge = chrono::high_resolution_clock::now();
         sortedNodesMerge = transactions.mergeSortAge(transactions.getNodes());
         auto endMerge = chrono::high_resolution_clock::now();
-        auto durationMerge = chrono::duration_cast<std::chrono::milliseconds>(endMerge - beginMerge);
+        durationMerge = chrono::duration_cast<std::chrono::milliseconds>(endMerge - beginMerge);
         auto beginQuick = chrono::high_resolution_clock::now();
         sortedNodesQuick = transactions.quickSortAge(transactions.getNodes());
         auto endQuick = chrono::high_resolution_clock::now();
-        auto durationQuick = chrono::duration_cast<std::chrono::milliseconds>(endQuick - beginQuick);
+        durationQuick = chrono::duration_cast<std::chrono::milliseconds>(endQuick - beginQuick);
     }
     else if (sortField == "amount") {
         auto beginMerge = chrono::high_resolution_clock::now();
         sortedNodesMerge = transactions.mergeSortAmount(transactions.getNodes());
         auto endMerge = chrono::high_resolution_clock::now();
-        auto durationMerge = chrono::duration_cast<std::chrono::milliseconds>(endMerge - beginMerge);
+        durationMerge = chrono::duration_cast<std::chrono::milliseconds>(endMerge - beginMerge);
         auto beginQuick = chrono::high_resolution_clock::now();
         sortedNodesQuick = transactions.quickSortAmount(transactions.getNodes());
         auto endQuick = chrono::high_resolution_clock::now();
-        auto durationQuick = chrono::duration_cast<std::chrono::milliseconds>(endQuick - beginQuick);
+        durationQuick = chrono::duration_cast<std::chrono::milliseconds>(endQuick - beginQuick);
     }
 
     for (const auto& node : sortedNodesMerge) {
