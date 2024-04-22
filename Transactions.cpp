@@ -170,20 +170,15 @@ double Transactions::getAvgTransactionAmount(const std::vector<Node*>& nodes) co
 }
 
 void Transactions::getFraudulentRate(const std::vector<Node*>& nodes) const {
-    int totalTransactions = nodes.size();
-    if (totalTransactions == 0) {
-        return;
-    }
-    double totalAmount = 0;
-    int btCount = 0;
-    int creditCount = 0;
-    int debitCount = 0;
-    int paypalCount = 0;
-    int btFraudCount = 0;
-    int creditFraudCount = 0;
-    int debitFraudCount = 0;
-    int paypalFraudCount = 0;
-    for (const Node* node : nodes) {
+    double btCount = 0;
+    double creditCount = 0;
+    double debitCount = 0;
+    double paypalCount = 0;
+    double btFraudCount = 0;
+    double creditFraudCount = 0;
+    double debitFraudCount = 0;
+    double paypalFraudCount = 0;
+    for (const auto& node : nodes) {
         if (node->transactionType == "bank transfer") {
             btCount++;
             if (node->isFraudulent) {
@@ -202,19 +197,19 @@ void Transactions::getFraudulentRate(const std::vector<Node*>& nodes) const {
                 debitFraudCount++;
             }
         }
-        else if (node->transactionType == "paypal") {
+        else if (node->transactionType == "PayPal") {
             paypalCount++;
             if (node->isFraudulent) {
                 paypalFraudCount++;
             }
         }
     }
-    double btPercent = btFraudCount / btCount;
-    double creditPercent = creditFraudCount / creditCount;
-    double debitPercent = debitFraudCount / debitCount;
-    double paypalPercent = paypalFraudCount / paypalCount;
+    double btPercent = (btFraudCount / btCount) * 100;
+    double creditPercent = (creditFraudCount / creditCount) * 100;
+    double debitPercent = (debitFraudCount / debitCount) * 100;
+    double paypalPercent = (paypalFraudCount / paypalCount) * 100;
 
 
-    cout << "Bank Transfer: " << btPercent << "/n" << "Credit Card: " << creditPercent << "/n"
-    << "Debit Card: " << debitPercent << "/n" << "PayPal: " << paypalPercent<< endl;
+    cout << "Bank Transfer: " << btPercent << "%\n" << "Credit Card: " << creditPercent << "%\n"
+    << "Debit Card: " << debitPercent << "%\n" << "PayPal: " << paypalPercent<< endl;
 }
