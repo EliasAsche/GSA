@@ -8,39 +8,32 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    string filePath;
-    string sortField;
-    cin >> filePath;
-    cin >>sortField;
     Transactions transactions;
-    transactions.readTransactionsCaller(filePath);
+    transactions.readTransactionsCaller(filePath); //change this and enter the filepath here
 
     vector<Transactions::Node*> sortedNodesMerge;
     vector<Transactions::Node*> sortedNodesQuick;
 
-    chrono::milliseconds durationMerge(0);
-    chrono::milliseconds durationQuick(0);
-
-    if (sortField == "age") {
-        auto beginMerge = chrono::high_resolution_clock::now();
+        auto beginMergeAge = chrono::high_resolution_clock::now();
         sortedNodesMerge = transactions.mergeSortAge(transactions.getNodes());
-        auto endMerge = chrono::high_resolution_clock::now();
-        durationMerge = chrono::duration_cast<std::chrono::milliseconds>(endMerge - beginMerge);
-        auto beginQuick = chrono::high_resolution_clock::now();
-        sortedNodesQuick = transactions.quickSortAge(transactions.getNodes());
-        auto endQuick = chrono::high_resolution_clock::now();
-        durationQuick = chrono::duration_cast<std::chrono::milliseconds>(endQuick - beginQuick);
-    }
-    else if (sortField == "amount") {
-        auto beginMerge = chrono::high_resolution_clock::now();
-        sortedNodesMerge = transactions.mergeSortAmount(transactions.getNodes());
-        auto endMerge = chrono::high_resolution_clock::now();
-        durationMerge = chrono::duration_cast<std::chrono::milliseconds>(endMerge - beginMerge);
-        auto beginQuick = chrono::high_resolution_clock::now();
-        sortedNodesQuick = transactions.quickSortAmount(transactions.getNodes());
-        auto endQuick = chrono::high_resolution_clock::now();
-        durationQuick = chrono::duration_cast<std::chrono::milliseconds>(endQuick - beginQuick);
-    }
+        auto endMergeAge = chrono::high_resolution_clock::now();
+        auto durationMergeAge = chrono::duration_cast<std::chrono::milliseconds>(endMergeAge - beginMergeAge);
+        auto beginQuickAge = chrono::high_resolution_clock::now();
+        auto sortedNodesQuickAge = transactions.quickSortAge(transactions.getNodes());
+        auto endQuickAge = chrono::high_resolution_clock::now();
+        auto durationQuickAge = chrono::duration_cast<std::chrono::milliseconds>(endQuickAge - beginQuickAge);
+
+        auto beginMergeAmount = chrono::high_resolution_clock::now();
+        auto sortedNodesMergeAmount = transactions.mergeSortAmount(transactions.getNodes());
+        auto endMergeAmount = chrono::high_resolution_clock::now();
+        auto durationMergeAmount = chrono::duration_cast<std::chrono::milliseconds>(endMergeAmount - beginMergeAmount);
+        auto beginQuickAmount = chrono::high_resolution_clock::now();
+        auto sortedNodesQuickAmount = transactions.quickSortAmount(transactions.getNodes());
+        auto endQuickAmount = chrono::high_resolution_clock::now();
+        auto durationQuickAmount = chrono::duration_cast<std::chrono::milliseconds>(endQuickAmount - beginQuickAmount);
+
+        double tAmount = transactions.getAvgTransactionAmount(transactions.getNodes());
+        double tAge = transactions.getAvgAccountAge(transactions.getNodes());
 
     for (const auto& node : sortedNodesMerge) {
         cout << "Transaction Type: " << node->transactionType
@@ -48,14 +41,21 @@ int main(int argc, char* argv[]) {
              << ", Account Age: " << node->accountAge
              << ", Is Fraudulent: " << (node->isFraudulent ? "Yes" : "No") << endl;
     }
-    cout << durationMerge.count();
+    cout << durationMergeAge.count();
+    cout << durationMergeAmount.count();
     for (const auto& node : sortedNodesQuick) {
         cout << "Transaction Type: " << node->transactionType
              << ", Amount: $" << node->transactionAmount
              << ", Account Age: " << node->accountAge
              << ", Is Fraudulent: " << (node->isFraudulent ? "Yes" : "No") << endl;
     }
-    cout << durationQuick.count();
+    cout << durationQuickAge.count();
+    cout << durationQuickAmount.count();
+
+    cout << "Statistics of Fraudulent Transactions:\n" << "Average Fraudulent Transaction Amount: " << tAmount << "\n"
+    << "Average Fraudulent Account Age: " << tAge << "\n" << "Fraud Rate of Transaction Types: \n";
+
+    transactions.getFraudulentRate(transactions.getNodes());
 
     return 0;
 }

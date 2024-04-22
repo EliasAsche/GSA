@@ -215,6 +215,6 @@ void Transactions::getFraudulentRate(const std::vector<Node*>& nodes) const {
     double paypalPercent = paypalFraudCount / paypalCount;
 
 
-    cout << "Bank Transfer" << btPercent << "/n" << "Credit Card" << creditPercent << "/n"
-    << "Debit Card" << debitPercent << "/n" << "PayPal" << paypalPercent<< endl;
+    cout << "Bank Transfer: " << btPercent << "/n" << "Credit Card: " << creditPercent << "/n"
+    << "Debit Card: " << debitPercent << "/n" << "PayPal: " << paypalPercent<< endl;
 }
