@@ -4,16 +4,6 @@ import os
 
 def run_cpp_backend(sort_method):
     try:
-        # Execute the C++ backend with the selected sorting method
-
-        # create pipe for c++ function processing
-        #data,temp = os.pipe()
-
-        # add sort method as input for function
-        #os.write(temp, bytes(sort_method + "\n", "utf-8"))
-        #os.close(temp)
-        
-        # adjust input params to match what c++ wants
         if sort_method == 'Merge Sort':
             sort_method = 'merge'
         else:
@@ -33,28 +23,50 @@ def run_cpp_backend(sort_method):
         print(f"Error running C++ backend: {e}")
         return "Error occurred during processing."
 
+def parse_output(output, method):
+    lines = output.split('\n')
+    if method == 'Merge Sort':
+        transactions = [line for line in lines if "Transaction Type" in line]
+        time = next((line for line in lines if "Merge Time" in line), "Time not found")
+        return transactions, time
+    elif method == 'Quick Sort':
+        transactions = [line for line in lines if "Transaction Type" in line]
+        time = next((line for line in lines if "Quick Time" in line), "Time not found")
+        return transactions, time
+    elif method == 'Stats':
+        stats = [line for line in lines if "Total" in line or "Average" in line]
+        return stats
+    else:
+        return "Invalid method selected"
+
 
 def create_main_window():
     background_color = '#FDBAC5'  # Barbie pink for the window background
     text_background_color = '#FF0000'  # Pastel pink for text background sections
     title_font = ('Comic Sans MS', 24, 'bold')  # Updated font and style for title
     text_font = ('Calibri', 14)  # Updated font for text
-    dropdown_options = ['Merge Sort', 'Quick Sort']
+    # sort_options = ['age', 'amount']  # Options for sorting
+    dropdown_options = ['Merge Sort', 'Quick Sort', 'Stats']
 
     layout = [
         [sg.Text('Bogus Buster: Is it Fraudulent?', font=title_font, justification='center', background_color=background_color, size=(25, 1))],
         [
             sg.Column([
-                [sg.Text('Select Algorithm:', font=text_font, justification='left', background_color=text_background_color)],
-                [sg.Combo(dropdown_options, default_value='Merge Sort', size=(20, 1), font=text_font, pad=(0, 5), key='-ALGO-')],
+                # [sg.Text('Select Sort Field:', font=text_font, justification='left', background_color=text_background_color)],
+                # [sg.Combo(sort_options, default_value='age', size=(20, 1), font=text_font, pad=(0, 5), key='-SORT_FIELD-')],
+                [sg.Text('Select Analysis Method:', font=text_font, justification='left', background_color=text_background_color)],
+                [sg.Combo(dropdown_options, default_value='Merge Sort', size=(20, 1), font=text_font, pad=(0, 5), key='-METHOD-')],
                 [sg.Button('Run Analysis', font=text_font)],
-                [sg.Text('Top 10 Transactions:', font=text_font, justification='left', background_color=text_background_color)],
-                [sg.Multiline(default_text='', size=(45, 5), key='-TOP_TRANS-', disabled=True, background_color='#FFFFFF')]
+                [sg.Text('Output:', font=text_font, justification='left', background_color=text_background_color)],
+                [sg.Multiline(default_text='', size=(45, 10), key='-OUTPUT-', disabled=True, background_color='#FFFFFF')],
             ], background_color=background_color, pad=((10, 10), (10, 10)))
         ],
+        [sg.Text('Execution Time:', font=text_font, justification='left', background_color=text_background_color)],
+        [sg.InputText(default_text='0 ms', key='-EXEC_TIME-', disabled=True, justification='center', size=(20, 1), font=text_font)],
         [sg.Button('Restart', size=(10, 2), font=('Calibri', 12), button_color=('white', '#FF0000'))]
     ]
     return sg.Window('Bogus Buster', layout, background_color=background_color, size=(700, 700), element_justification='c')
+
 
 def window_operations():
     main_window = create_main_window()
@@ -62,16 +74,22 @@ def window_operations():
         event, values = main_window.read()
         if event == sg.WINDOW_CLOSED:
             break
-        if event == 'Restart':
-            main_window.close()
-            main_window = create_main_window()  # Restarting the application window
         if event == 'Run Analysis':
-            output = run_cpp_backend(values['-ALGO-'])
-            print(output)
-            # Update the multiline text element with only the required data from the output
-            main_window['-TOP_TRANS-'].update(output if output else "No output or an error occurred")
+            file_path = values['-FILE_PATH-']
+            # sort_field = values['-SORT_FIELD-']
+            method = values['-METHOD-']
+            output = run_cpp_backend(file_path)
+            parsed_data, time_info = parse_output(output, method)
+            if method in ['Merge', 'Quick']:
+                main_window['-TRANSACTIONS-'].update("\n".join(parsed_data))
+                main_window['-TIME-'].update(time_info)
+            elif method == 'Stats':
+                main_window['-STATS-'].update("\n".join(parsed_data))
+            else:
+                main_window['-OUTPUT-'].update("No valid output available")
 
     main_window.close()
+
 
 
 # Function to create the welcome window
