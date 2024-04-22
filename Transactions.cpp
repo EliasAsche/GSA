@@ -102,27 +102,35 @@ vector<Transactions::Node*> Transactions::quickSortAmount(const vector<Node*>& n
     return less;
 }
 
-void Transactions::readTransactions(const std::string& filename) {
-    std::ifstream file(filename);
-    std::string line;
-    std::getline(file, line);
+void Transactions::readTransactions(const string& filename) {
+    ifstream file(filename);
+    string line;
+    getline(file, line);
 
-    while (std::getline(file, line)) {
-        std::stringstream ss(line);
-        std::vector<std::string> transactionData;
-        std::string data;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        vector<string> transactionData;
+        string data;
 
-        while (std::getline(ss, data, ',')) {
+        while (getline(ss, data, ',')) {
             transactionData.push_back(data);
         }
 
-        double amount = std::stod(transactionData[0]);
-        std::string type = transactionData[1];
+        double amount = stod(transactionData[0]);
+        string type = transactionData[1];
         bool isFraudulent = transactionData[2] == "1";
-        int age = std::stoi(transactionData[3]);
+        int age = stoi(transactionData[3]);
 
         Node* newNode = new Node(type, amount, age, isFraudulent);
-        transactionNodes.push_back(newNode);// Optionally display the node data
+        transactionNodes.push_back(newNode);
     }
     file.close();
+}
+
+void Transactions::readTransactionsCaller(const std::string &filename) {
+    readTransactions(filename);
+}
+
+vector<Transactions::Node*> Transactions::getNodes() const{
+    return this->transactionNodes;
 }
