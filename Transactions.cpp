@@ -2,10 +2,100 @@
 #include <algorithm>
 using namespace std;
 
-vector<Transactions::Node*> Transactions::mergeSort(const vector<Node*>& nodes) {
+vector<Transactions::Node*> mergeByAge(const vector<Transactions::Node*>& left, const vector<Transactions::Node*>& right) {
+    vector<Transactions::Node*> result;
+    unsigned leftIndex = 0, rightIndex = 0;
+    while (leftIndex < left.size() && rightIndex < right.size()) {
+        if (left[leftIndex]->accountAge <= right[rightIndex]->accountAge) {
+            result.push_back(left[leftIndex]);
+            leftIndex++;
+        } else {
+            result.push_back(right[rightIndex]);
+            rightIndex++;
+        }
+    }
+    result.insert(result.end(), left.begin() + leftIndex, left.end());
+    result.insert(result.end(), right.begin() + rightIndex, right.end());
+    return result;
+}
 
-};
+vector<Transactions::Node*> Transactions::mergeSortAge(const vector<Node*>& nodes) const {
+    if (nodes.size() <= 1) {
+        return nodes;
+    }
+    int mid = nodes.size() / 2;
+    vector<Node*> left(nodes.begin(), nodes.begin() + mid);
+    vector<Node*> right(nodes.begin() + mid, nodes.end());
+    return mergeByAge(mergeSortAge(left), mergeSortAge(right));
+}
 
-vector<Transactions::Node*> quickSort(const vector<Node*>& nodes) {
+vector<Transactions::Node*> Transactions::quickSortAge(const vector<Node*>& nodes) const {
+    if (nodes.size() <= 1) {
+        return nodes;
+    }
+    vector<Node*> less, equal, greater;
+    Node* pivot = nodes[nodes.size() / 2];
+    for (Node* node : nodes) {
+        if (node->accountAge < pivot->accountAge) {
+            less.push_back(node);
+        } else if (node->accountAge > pivot->accountAge) {
+            greater.push_back(node);
+        } else {
+            equal.push_back(node);
+        }
+    }
+    less = quickSortAge(less);
+    greater = quickSortAge(greater);
+    less.insert(less.end(), equal.begin(), equal.end());
+    less.insert(less.end(), greater.begin(), greater.end());
+    return less;
+}
 
-};
+vector<Transactions::Node*> mergeByAmount(const vector<Transactions::Node*>& left, const vector<Transactions::Node*>& right) {
+    vector<Transactions::Node*> result;
+    unsigned leftIndex = 0, rightIndex = 0;
+    while (leftIndex < left.size() && rightIndex < right.size()) {
+        if (left[leftIndex]->transactionAmount <= right[rightIndex]->transactionAmount) {
+            result.push_back(left[leftIndex]);
+            leftIndex++;
+        } else {
+            result.push_back(right[rightIndex]);
+            rightIndex++;
+        }
+    }
+    result.insert(result.end(), left.begin() + leftIndex, left.end());
+    result.insert(result.end(), right.begin() + rightIndex, right.end());
+    return result;
+}
+
+vector<Transactions::Node*> Transactions::mergeSortAmount(const vector<Node*>& nodes) const {
+    if (nodes.size() <= 1) {
+        return nodes;
+    }
+    int mid = nodes.size() / 2;
+    vector<Node*> left(nodes.begin(), nodes.begin() + mid);
+    vector<Node*> right(nodes.begin() + mid, nodes.end());
+    return mergeByAmount(mergeSortAmount(left), mergeSortAmount(right));
+}
+
+vector<Transactions::Node*> Transactions::quickSortAmount(const vector<Node*>& nodes) const {
+    if (nodes.size() <= 1) {
+        return nodes;
+    }
+    vector<Node*> less, equal, greater;
+    Node* pivot = nodes[nodes.size() / 2];
+    for (Node* node : nodes) {
+        if (node->transactionAmount < pivot->transactionAmount) {
+            less.push_back(node);
+        } else if (node->transactionAmount > pivot->transactionAmount) {
+            greater.push_back(node);
+        } else {
+            equal.push_back(node);
+        }
+    }
+    less = quickSortAmount(less);
+    greater = quickSortAmount(greater);
+    less.insert(less.end(), equal.begin(), equal.end());
+    less.insert(less.end(), greater.begin(), greater.end());
+    return less;
+}

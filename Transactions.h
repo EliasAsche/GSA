@@ -19,6 +19,8 @@ private:
     std::vector<Node*> transactionNodes; // Use smart pointers for better memory management
 
 public:
-    std::vector<Node*> mergeSort(const std::vector<Node*>& nodes) const;
-    std::vector<Node*> quickSort(const std::vector<Node*>& nodes) const;
+    std::vector<Node*> mergeSortAge(const std::vector<Node*>& nodes) const;
+    std::vector<Node*> quickSortAge(const std::vector<Node*>& nodes) const;
+    std::vector<Node*> mergeSortAmount(const std::vector<Node*>& nodes) const;
+    std::vector<Node*> quickSortAmount(const std::vector<Node*>& nodes) const;
 };
