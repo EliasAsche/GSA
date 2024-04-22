@@ -3,10 +3,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
 using namespace std;
 
-// Function to split a string based on a delimiter and return a vector of strings
+//splitting up the token data created in python
 vector<string> split(const string &s, char delimiter) {
     vector<string> tokens;
     string token;
@@ -17,7 +16,7 @@ vector<string> split(const string &s, char delimiter) {
     return tokens;
 }
 
-// Function to read and print CSV data
+//reading and printing the CSV data
 void readAndPrintCSV(const string &filePath) {
     ifstream file(filePath);
     string line;
