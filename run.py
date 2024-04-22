@@ -1,4 +1,21 @@
+<<<<<<< HEAD:main.py
 import PySimpleGUI as sg # type: ignore
+=======
+import PySimpleGUI as sg
+import subprocess
+
+def run_cpp_backend(input_data):
+    try:
+        # Replace 'your_cpp_program' with the path to your compiled C++ executable
+        # and include any necessary arguments.
+        # For example, if your C++ program expects a single input argument:
+        result = subprocess.run(['./your_cpp_program', input_data], capture_output=True, text=True, check=True)
+        return result.stdout  # This captures the standard output from the C++ program
+    except subprocess.CalledProcessError as e:
+        print("Error running C++ backend:", e)
+        return None
+
+>>>>>>> 86c2e62f225a764a17ff305b3cab4c288c49dded:run.py
 
 # Function to create the main application window
 def create_main_window():
