@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <iostream>
 using namespace std;
 
 vector<Transactions::Node*> mergeByAge(const vector<Transactions::Node*>& left, const vector<Transactions::Node*>& right) {
@@ -168,18 +169,43 @@ double Transactions::getAvgTransactionAmount(const std::vector<Node*>& nodes) co
     }
 }
 
-double Transactions::getFraudulentRate(const std::vector<Node*>& nodes) const {
+void Transactions::getFraudulentRate(const std::vector<Node*>& nodes) const {
     int totalTransactions = nodes.size();
     if (totalTransactions == 0) {
-        return 0.0;
+        return
     }
-
-    int fraudulentCount = 0;
+    double totalAmount = 0;
+    int btCount = 0;
+    int creditCount = 0;
+    int debitCount = 0;
+    int paypalCount = 0;
+    int btFraudCount = 0;
+    int creditFraudCount = 0;
+    int debitFraudCount = 0;
+    int paypalFraudCount = 0;
     for (const Node* node : nodes) {
-        if (node->isFraudulent) {
-            fraudulentCount++;
+        if (node->transactionType == "bank transfer") {
+            btCount++;
+            if (node->isFraudulent) {
+                btFraudCount++;
+            }
+        }
+        else if (node->transactionType == "credit card") {
+            creditCount++
+            if (node->isFraudulent) {}
+            creditFraudCount++;
+        }
+        else if (node->transactionType == "debit card") {
+            debitCount++;
+            if (node->isFraudulent) {}
+            debitFraudCount++;
+        }
+        else if (node->transactionType == "paypal") {
+            paypalCount++;
+            if (node->isFraudulent) {}
+            paypalFraudCount++;
         }
     }
-
-    return 100.0 * fraudulentCount / totalTransactions;
+    cout << "Bank Transfer" << btFraudCount / btCount << "/n" << "Credit Card" << creditFraudCount / creditCount << "/n"
+    << "Debit Card" << debitFraudCount / debitCount << "/n" << "PayPal" << paypalFraudCount / paypalCount << endl;
 }

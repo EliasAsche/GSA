@@ -22,7 +22,7 @@ public:
     std::vector<Node*> quickSortAmount(const std::vector<Node*>& nodes) const;
     double getAvgAccountAge(const std::vector<Node*>& nodes) const;
     double getAvgTransactionAmount(const std::vector<Node*>& nodes) const;
-    double getFraudulentRate(const std::vector<Node*>& nodes) const;
+    void getFraudulentRate(const std::vector<Node*>& nodes) const;
 
 private:
     std::vector<Node*> transactionNodes;
