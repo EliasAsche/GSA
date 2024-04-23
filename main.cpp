@@ -7,10 +7,10 @@ using namespace std;
 
 //splitting up the token data created in python
 vector<string> split(const string &s, char delimiter) {
-    vector<string> tokens;
-    string token;
-    istringstream tokenStream(s);
-    while (getline(tokenStream, token, delimiter)) {
+    vector<string> tokens; //new vector that stores and splits up the string
+    string token; //a temporary string that holds each split part
+    istringstream tokenStream(s); //creating a string stream from the input string
+    while (getline(tokenStream, token, delimiter)) { //extracting strings split by the delimiter
         tokens.push_back(token);
     }
     return tokens;
@@ -18,7 +18,7 @@ vector<string> split(const string &s, char delimiter) {
 
 //reading and printing the CSV data
 void readAndPrintCSV(const string &filePath) {
-    ifstream file(filePath);
+    ifstream file(filePath); //opens the file stream with given file path
     string line;
 
     if (!file.is_open()) {
@@ -27,9 +27,9 @@ void readAndPrintCSV(const string &filePath) {
     }
 
     while (getline(file, line)) {
-        vector<string> tokens = split(line, ',');
+        vector<string> tokens = split(line, ','); //splitting each line by the comma
         for (const string& token : tokens) {
-            cout << token << " ";
+            cout << token << " "; //printing each token followed by a space to ensure its saved correctly
         }
         cout << endl;
     }
