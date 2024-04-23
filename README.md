@@ -7,11 +7,19 @@ How to Run the frontend:
 - should output a out2.exe file in directory
 - to open the popup window, run this command in terminal: "python run.py"
 - make sure to click restart after age or amount selection if not followed by fraud stats selection
+- also ensure all neccesary libries (pysimpleGUI) are installed (it is in master branch)
 
-How the backend is set up:
-- Transactions class with the nested Node structure, in which each hold the type, amount, age, and flag indicating whether its fraudulent
-- File operation methods, such as readTransactions(const string& filename), which reads transaction data from a file and stores them into a vector
-- The file operations also parse each line of the data file and extracts the attributes and converts them into their specific types
-- The merge sort algorithms recursively split the nodes in half until each half has a single node or is empty, then merges it back in a sorted order based on its amount or age attribute.
-- the quick sorts are divided nodes into less, equivalent, or greater pivot value points and produced lists which are merged and sorted.
+How to run the back end:
+- download the transactions files and main.cpp
+- download the txt file with all of the data
+- create a project in an IDE and add all of the cpp and header files (Should only be three)
+- set up the file path in main.cpp to match where you downloaded txt file
+- run the file!
+
+Connecting everything:
+- After the previous steps were completed (including creating the exe) create a project in vscode with all files from master (python and c++)
+- ensure all file paths are correct and the exe was properly generated
+- upon running run.py the window will open and will be fully interactable
+
+
 
