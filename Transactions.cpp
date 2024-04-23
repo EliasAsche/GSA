@@ -58,7 +58,7 @@ vector<Transactions::Node*> mergeByAmount(const vector<Transactions::Node*>& lef
     vector<Transactions::Node*> result;
     unsigned leftIndex = 0, rightIndex = 0;
     while (leftIndex < left.size() && rightIndex < right.size()) {
-        if (left[leftIndex]->transactionAmount <= right[rightIndex]->transactionAmount) {
+        if (left[leftIndex]->transactionAmount >= right[rightIndex]->transactionAmount) {
             result.push_back(left[leftIndex]);
             leftIndex++;
         } else {
@@ -70,6 +70,7 @@ vector<Transactions::Node*> mergeByAmount(const vector<Transactions::Node*>& lef
     result.insert(result.end(), right.begin() + rightIndex, right.end());
     return result;
 }
+
 
 vector<Transactions::Node*> Transactions::mergeSortAmount(const vector<Node*>& nodes) const {
     if (nodes.size() <= 1) {
@@ -88,9 +89,9 @@ vector<Transactions::Node*> Transactions::quickSortAmount(const vector<Node*>& n
     vector<Node*> less, equal, greater;
     Node* pivot = nodes[nodes.size() / 2];
     for (Node* node : nodes) {
-        if (node->transactionAmount < pivot->transactionAmount) {
+        if (node->transactionAmount > pivot->transactionAmount) {
             less.push_back(node);
-        } else if (node->transactionAmount > pivot->transactionAmount) {
+        } else if (node->transactionAmount < pivot->transactionAmount) {
             greater.push_back(node);
         } else {
             equal.push_back(node);
@@ -102,6 +103,7 @@ vector<Transactions::Node*> Transactions::quickSortAmount(const vector<Node*>& n
     less.insert(less.end(), greater.begin(), greater.end());
     return less;
 }
+
 
 void Transactions::readTransactions(const string& filename) {
     ifstream file(filename);
