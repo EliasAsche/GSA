@@ -18,7 +18,7 @@ How to run the back end:
 
 Connecting everything:
 - After the previous steps were completed (including creating the exe) create a project in vscode with all files from master (python and c++)
-- ensure all file paths are correct and the exe was properly generated
+- ensure all file paths (pertaining to the txt file) are correct and the exe was properly generated
 - upon running run.py the window will open and will be fully interactable
 
 
