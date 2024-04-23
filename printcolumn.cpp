@@ -6,25 +6,25 @@ using namespace std;
 
 void printColumn(const std::string& filename, int columnIndex) {
     ifstream file(filename);
-    if (!file.is_open()) {
+    if (!file.is_open()) { //checking if the file is open
         cerr << "Failed to open file: " << filename << endl;
         return;
     }
 
-    string line;
-    getline(file, line); 
+    string line; //delaring a string to stoe each line read from the file
+    getline(file, line); //reads and disregarding the headers
 
     while (getline(file, line)) {
         stringstream ss(line);
         string cell;
-        int currentColumn = 0; 
+        int currentColumn = 0; //initializing the current column index to zero
 
         while (getline(ss, cell, ';')) {  
-            if (currentColumn == columnIndex) {
-                cout << "check 2" << endl;
+            if (currentColumn == columnIndex) { //checking if the current column is the one we are looking at
+                cout << cell << endl; //outputting the value of the cell
                 break; 
             }
-            currentColumn++;
+            currentColumn++; //incremementing the column index
         }
     }
 
