@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-vector<Transactions::Node*> mergeByAge(const vector<Transactions::Node*>& left, const vector<Transactions::Node*>& right) {
+vector<Transactions::Node*> mergeByAge(const vector<Transactions::Node*>& left, const vector<Transactions::Node*>& right) { // helper funjcti0 
     vector<Transactions::Node*> result;
     unsigned leftIndex = 0, rightIndex = 0;
     while (leftIndex < left.size() && rightIndex < right.size()) {
