@@ -1,0 +1,15 @@
+# Compiled files
+*.exe
+*.o
+*.obj
+
+# Python environments
+.venv/
+__pycache__/
+
+# Secrets
+.env
+.env.*
+
+# Local test outputs
+gsa_baseline_output.txt

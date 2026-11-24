@@ -9,7 +9,7 @@ using namespace std;
 // this file basically just iterates performs all sorts and bonus function and couts everything to the screen so that the front end can parse it
 int main(int argc, char* argv[]) {
     Transactions transactions;
-    transactions.readTransactionsCaller("C:/Users/jazly/alliancebranch/GSA/transactions.txt"); //change this and enter the filepath here
+    transactions.readTransactionsCaller(argc > 1 ? argv[1] : "transactions.txt");
 
 
     vector<Transactions::Node*> sortedNodesMergeAge;
