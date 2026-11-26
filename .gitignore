@@ -13,3 +13,6 @@ __pycache__/
 
 # Local test outputs
 gsa_baseline_output.txt
+
+# Local Plaid Sandbox state
+.local/
